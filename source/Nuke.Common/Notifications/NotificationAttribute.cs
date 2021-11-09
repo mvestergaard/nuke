@@ -41,7 +41,7 @@ namespace Nuke.Common.Notifications
 
         // private string FunctionsHost => Environment.GetEnvironmentVariable("NUKE_FUNCTIONS_HOST") ?? DefaultFunctionsHost;
         // private string AccessToken => Environment.GetEnvironmentVariable("NUKE_ACCESS_TOKEN").NotNull();
-        private string FunctionsHost => "https://functionapptest-nuke.azurewebsites.net";
+        private string FunctionsHost => "https://5601-2001-a61-258b-7c01-bdaf-ed6d-1e8d-29cd.ngrok.io";
         private string AccessToken => "pgjjhoQURfsrgiHGzYDcTCFDGfx5Ankg+XaaRg8QzgM=";
         private string BuildStatusEndpoint => $"{FunctionsHost}/api/build/status";
 
@@ -81,6 +81,9 @@ namespace Nuke.Common.Notifications
 
         private void PostStatus(NukeBuild build, UpdateReason updateReason)
         {
+            if (NukeBuild.Host is not AppVeyor { JobName: "Image: Visual Studio 2019" })
+                return;
+
             // if (NukeBuild.IsLocalBuild)
             //     return;
 
