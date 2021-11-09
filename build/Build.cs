@@ -14,6 +14,7 @@ using Nuke.Common.CI.TeamCity;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
+using Nuke.Common.Notifications;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -28,6 +29,7 @@ using static Nuke.Common.Tools.ReSharper.ReSharperTasks;
 [CheckBuildProjectConfigurations]
 [DotNetVerbosityMapping]
 [ShutdownDotNetAfterServerBuild]
+[Notifications(VersionParameter = nameof(NotificationsVersion))]
 partial class Build
     : NukeBuild,
         IHazTwitterCredentials,
@@ -61,6 +63,7 @@ partial class Build
 
     [Solution(GenerateProjects = true)] readonly Solution Solution;
     Nuke.Common.ProjectModel.Solution IHazSolution.Solution => Solution;
+    string NotificationsVersion => GitVersion.FullSemVer;
 
     IHazTwitterCredentials TwitterCredentials => From<IHazTwitterCredentials>();
 

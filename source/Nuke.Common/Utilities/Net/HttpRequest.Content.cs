@@ -20,6 +20,11 @@ namespace Nuke.Common.Utilities.Net
             return builder.WithStringContent(JsonConvert.SerializeObject(obj), "application/json");
         }
 
+        public static HttpRequestBuilder WithJsonContent<T>(this HttpRequestBuilder builder, T obj, JsonSerializerSettings settings)
+        {
+            return builder.WithStringContent(JsonConvert.SerializeObject(obj, settings), "application/json");
+        }
+
         public static HttpRequestBuilder WithStringContent(this HttpRequestBuilder builder, string content, string mediaType)
         {
             builder.Request.Content = new StringContent(content, Encoding.UTF8, mediaType);
