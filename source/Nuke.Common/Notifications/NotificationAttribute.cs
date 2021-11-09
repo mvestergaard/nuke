@@ -24,6 +24,7 @@ using Nuke.Common.Tools.Git;
 using Nuke.Common.Utilities;
 using Nuke.Common.Utilities.Net;
 using Serilog;
+using Serilog.Events;
 
 namespace Nuke.Common.Notifications
 {
@@ -109,7 +110,9 @@ namespace Nuke.Common.Notifications
                     Targets = _targets.Select(GetStatus).ToList(),
                     // IsFinished = build.IsFinished,
                     // IsSuccessful = build.IsSuccessful,
-                    ErrorMessage = Logging.InMemorySink.Instance.LogEvents.Select(x => x.MessageTemplate.Text).JoinNewLine(),
+                    ErrorMessage = Logging.InMemorySink.Instance.LogEvents
+                        .Where(x => x.Level >= LogEventLevel.Error)
+                        .Select(x => x.MessageTemplate.Text).JoinNewLine(),
                     ExitCode = build.ExitCode
                 };
 
